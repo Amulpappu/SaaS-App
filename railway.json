@@ -1,0 +1,39 @@
+{
+  "$schema": "https://railway.app/blueprint.schema.json",
+  "services": {
+    "db": {
+      "source": {
+        "image": "postgres:15-alpine"
+      },
+      "variables": {
+        "POSTGRES_DB": "saas_db",
+        "POSTGRES_PASSWORD": "${{PASSWORD}}",
+        "POSTGRES_USER": "postgres"
+      }
+    },
+    "backend": {
+      "source": {
+        "directory": "backend",
+        "dockerfile": "../docker/Dockerfile.backend"
+      },
+      "variables": {
+        "DATABASE_URL": "postgresql://postgres:${{db.POSTGRES_PASSWORD}}@${{db.RAILWAY_INTERNAL_HOST}}:5432/saas_db",
+        "SECRET_KEY": "${{RAILWAY_PROJECT_ID}}",
+        "STRIPE_SECRET_KEY": "",
+        "STRIPE_WEBHOOK_SECRET": "",
+        "FRONTEND_URL": "https://${{RAILWAY_PUBLIC_DOMAIN}}"
+      },
+      "dependsOn": ["db"]
+    },
+    "frontend": {
+      "source": {
+        "directory": "frontend",
+        "dockerfile": "../docker/Dockerfile.frontend"
+      },
+      "variables": {
+        "VITE_API_URL": "https://${{backend.RAILWAY_PUBLIC_DOMAIN}}"
+      },
+      "dependsOn": ["backend"]
+    }
+  }
+}
