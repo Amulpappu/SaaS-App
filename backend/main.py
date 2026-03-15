@@ -10,10 +10,19 @@ from billing import router as billing_router
 from analytics_routes import router as analytics_router
 from admin_routes import router as admin_router
 
-# Initialize database tables
-models.Base.metadata.create_all(bind=engine)
+# Note: DB initialization moved to app startup or managed externally to prevent module-level crashes
+# models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="SaaS Platform API", description="Robust backend for a SaaS Platform")
+
+@app.on_event("startup")
+def on_startup():
+    print("Starting up SaaS Platform API...")
+    try:
+        models.Base.metadata.create_all(bind=engine)
+        print("Database tables verified.")
+    except Exception as e:
+        print(f"WARNING: Database initialization failed: {e}")
 
 # CORS setup
 app.add_middleware(
