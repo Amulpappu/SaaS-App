@@ -10,8 +10,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-# Expose Uvicorn port
+# Expose default port (overridden by cloud providers)
 EXPOSE 8000
 
-# Start server
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Start server using the PORT environment variable if provided, else default to 8000
+CMD uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}
