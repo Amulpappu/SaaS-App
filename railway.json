@@ -1,5 +1,4 @@
 {
-  "$schema": "https://railway.app/blueprint.schema.json",
   "services": {
     "db": {
       "source": {
