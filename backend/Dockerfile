@@ -8,9 +8,6 @@ RUN apt-get update && apt-get install -y gcc libpq-dev && rm -rf /var/lib/apt/li
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Create sqlite db mapping point (optional but good practice)
-VOLUME /app/data
-
 COPY . .
 
 # Expose Uvicorn port
