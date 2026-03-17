@@ -1,17 +1,20 @@
 # Build stage
-FROM node:18-alpine as build-stage
+FROM node:18-alpine as builder
 WORKDIR /app
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 COPY . .
 RUN npm run build
 
 # Production stage
-FROM nginx:stable-alpine as production-stage
-COPY --from=build-stage /app/dist /usr/share/nginx/html
+FROM nginx:stable-alpine
+COPY --from=builder /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Add custom nginx config to handle SPA routing and proxying if needed
-# For now, we assume the host handles proxying or we use a basic config
 EXPOSE 80
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD wget --quiet --tries=1 --spider http://localhost/index.html || exit 1
+
 CMD ["nginx", "-g", "daemon off;"]
