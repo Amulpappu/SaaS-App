@@ -1,4 +1,4 @@
-# Full-Stack SaaS Platform Architecture
+# Full-Stack SaaS Platform 🚀
 
 A complete, production-ready SaaS boilerplate featuring Authentication, Stripe Billing, role-based Team Collaboration, Analytics, and an Admin dashboard.
 
@@ -32,7 +32,7 @@ To use Stripe, update the following keys in `docker/docker-compose.yml` under `b
 Execute the entire stack via Docker:
 
 ```shell
-cd saas_platform/docker
+cd docker
 docker compose up --build
 ```
 
@@ -49,3 +49,11 @@ docker compose up --build
   ```sql
   UPDATE users SET is_admin = true WHERE email = 'YOUR_EMAIL';
   ```
+
+## ☁️ Deployment
+Step-by-step guides (Docker, Railway, VPS, Windows) are in [`docs/deployment/`](docs/deployment). Start with [`QUICK_START.md`](docs/deployment/QUICK_START.md) or [`DEPLOYMENT_GUIDE.md`](docs/deployment/DEPLOYMENT_GUIDE.md).
+
+> 🔐 Before deploying, set your own `SECRET_KEY` and Stripe keys as environment variables. Never use the defaults in production.
+
+## 👤 Author
+**Lohith K** · [GitHub](https://github.com/Amulpappu) · [LinkedIn](https://www.linkedin.com/in/lohith-k-b1331a3a8/)
